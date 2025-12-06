@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class EventsNotificatorApplication
 
 fun main(args: Array<String>) {
-	runApplication<EventsNotificatorApplication>(*args)
+  runApplication<EventsNotificatorApplication>(*args)
 }

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Users (
     date_of_birthday    DATE            NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Events_Statuses (
+CREATE TABLE IF NOT EXISTS Events_Types (
     id              UUID            PRIMARY KEY,
     name            VARCHAR(50)     NOT NULL,
     description     TEXT
@@ -24,12 +24,12 @@ CREATE TABLE IF NOT EXISTS Events (
     name            VARCHAR(50)     NOT NULL,
     description     TEXT,
     date            DATE            NOT NULL,
-    type_id         UUID            NOT NULL        REFERENCES Events_Statuses(id),
+    type_id         UUID            NOT NULL        REFERENCES Events_Types(id),
     person_id         UUID            REFERENCES People(id)
 );
 
 CREATE TABLE IF NOT EXISTS Subscriptions (
-    id          UUID    PRIMARY KEY,
     user_id     UUID    NOT NULL        REFERENCES Users(id),
-    event_id    UUID    NOT NULL        REFERENCES Events(id)
+    event_id    UUID    NOT NULL        REFERENCES Events(id),
+    PRIMARY KEY (user_id, event_id)
 )

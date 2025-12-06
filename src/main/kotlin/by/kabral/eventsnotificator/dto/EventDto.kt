@@ -1,0 +1,11 @@
+package by.kabral.eventsnotificator.dto
+
+import java.time.LocalDate
+import java.util.*
+
+data class EventDto(
+  val id: UUID?,
+  val description: String?,
+  val date: LocalDate,
+  val type: EventTypeDto,
+)

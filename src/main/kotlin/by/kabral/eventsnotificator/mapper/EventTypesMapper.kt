@@ -5,7 +5,7 @@ import by.kabral.eventsnotificator.model.EventType
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-interface EventsTypesMapper {
+interface EventTypesMapper {
   fun toDto(entity: EventType): EventTypeDto
   fun toEntity(dto: EventTypeDto): EventType
 }

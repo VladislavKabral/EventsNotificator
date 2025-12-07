@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS People (
     id          UUID            PRIMARY KEY,
     lastname    VARCHAR(50)     NOT NULL,
-    firstname   VARCHAR(50)     NOT NULL
+    firstname   VARCHAR(50)     NOT NULL,
+    middle_name VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Users (
@@ -24,12 +25,12 @@ CREATE TABLE IF NOT EXISTS Events (
     name            VARCHAR(50)     NOT NULL,
     description     TEXT,
     date            DATE            NOT NULL,
-    type_id         UUID            NOT NULL        REFERENCES Events_Types(id),
+    type_id         UUID            NOT NULL        REFERENCES Events_Types(id) ON DELETE SET NULL,
     person_id         UUID            REFERENCES People(id)
 );
 
 CREATE TABLE IF NOT EXISTS Subscriptions (
-    user_id     UUID    NOT NULL        REFERENCES Users(id),
-    event_id    UUID    NOT NULL        REFERENCES Events(id),
+    user_id     UUID    NOT NULL        REFERENCES Users(id) ON DELETE CASCADE,
+    event_id    UUID    NOT NULL        REFERENCES Events(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, event_id)
 )

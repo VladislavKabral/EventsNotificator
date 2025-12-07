@@ -19,5 +19,8 @@ data class Person(
   val lastname: String,
 
   @Column(name = "firstname")
-  val firstname: String
+  val firstname: String,
+
+  @Column(name = "middle_name")
+  val middleName: String
 )

@@ -16,11 +16,11 @@ data class Person(
   val id: UUID?,
 
   @Column(name = "lastname")
-  val lastname: String,
+  var lastname: String,
 
   @Column(name = "firstname")
-  val firstname: String,
+  var firstname: String,
 
   @Column(name = "middle_name")
-  val middleName: String
+  var middleName: String
 )

@@ -1,11 +1,15 @@
 package by.kabral.eventsnotificator.service
 
+import by.kabral.eventsnotificator.dto.PeopleDto
 import by.kabral.eventsnotificator.dto.PersonDto
+import by.kabral.eventsnotificator.dto.RemovedEntityDto
 import by.kabral.eventsnotificator.exception.BusinessLogicException
+import by.kabral.eventsnotificator.exception.EntityNotSavedException
 import by.kabral.eventsnotificator.mapper.PeopleMapper
 import by.kabral.eventsnotificator.model.Person
 import by.kabral.eventsnotificator.repository.PeopleRepository
 import by.kabral.eventsnotificator.util.Message.PERSON_NOT_FOUND
+import by.kabral.eventsnotificator.util.Message.PERSON_NOT_SAVED
 import by.kabral.eventsnotificator.util.Message.PERSON_WITH_ID_NOT_FOUND
 import by.kabral.eventsnotificator.util.Message.TOO_MANY_PEOPLE
 import jakarta.persistence.EntityNotFoundException
@@ -18,9 +22,11 @@ class PeopleService(
   private val peopleMapper: PeopleMapper
 ) {
 
-  fun getPeopleDto(): List<PersonDto> {
-    return findAll()
+  fun getPeopleDto(): PeopleDto {
+    return PeopleDto(
+      findAll()
       .map { peopleMapper.toDto(it) }
+    )
   }
 
   fun findAll(): List<Person> {
@@ -67,6 +73,33 @@ class PeopleService(
     )
     validateListOfPeople(people)
     return people.firstOrNull()
+  }
+
+  fun save(dto: PersonDto): PersonDto {
+    val person = peopleMapper.toEntity(dto)
+
+    val newPerson = peopleRepository.save(person)
+
+    return newPerson.id?.let { peopleMapper.toDto(findById(it)) }
+      ?: throw EntityNotSavedException(PERSON_NOT_SAVED)
+  }
+
+  fun update(id: UUID, dto: PersonDto): PersonDto {
+    val person = findById(id)
+
+    person.lastname = dto.lastname
+    person.firstname = dto.firstname
+    person.middleName = dto.middleName
+
+    return peopleMapper.toDto(
+      peopleRepository.save(person)
+    )
+  }
+
+  fun delete(id: UUID) : RemovedEntityDto {
+    peopleRepository.deleteById(id)
+
+    return RemovedEntityDto(id)
   }
 
   private fun validateListOfPeople(people: List<Person>) {

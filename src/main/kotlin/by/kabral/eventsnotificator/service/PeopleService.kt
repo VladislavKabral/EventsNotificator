@@ -45,34 +45,37 @@ class PeopleService(
   }
 
   fun findPerson(person: PersonDto): Person {
-    return findByLastname(person.lastname)
-      ?: findByLastnameAndFirstName(person.lastname, person.firstname)
-      ?: findByLastNameAndFirstnameAndMiddleName(person.lastname, person.firstname, person.middleName)
-      ?: throw BusinessLogicException(PERSON_NOT_FOUND)
+    return findByLastname(person)
+      ?: findByLastnameAndFirstName(person)
+      ?: findByLastNameAndFirstnameAndMiddleName(person)
+      ?: throw BusinessLogicException(TOO_MANY_PEOPLE)
   }
 
-  fun findByLastname(lastname: String): Person? {
-    val people = peopleRepository.findByLastname(lastname)
-    validateListOfPeople(people)
-    return people.firstOrNull()
+  fun findByLastname(dto: PersonDto): Person? {
+    val people = peopleRepository.findByLastname(dto.lastname)
+    return validateListOfPeople(people)
   }
 
-  fun findByLastnameAndFirstName(lastname: String, firstname: String): Person? {
-    val people = peopleRepository.findByLastnameAndFirstname(lastname, firstname)
-    validateListOfPeople(people)
-    return people.firstOrNull()
+  fun findByLastnameAndFirstName(dto: PersonDto): Person? {
+    val people = dto.firstname
+      ?.let { firstname -> peopleRepository.findByLastnameAndFirstname(dto.lastname, firstname) }
+      ?: return null
+
+    return validateListOfPeople(people)
   }
 
-  fun findByLastNameAndFirstnameAndMiddleName(
-    lastname: String, firstname: String, middleName: String
-  ): Person? {
-    val people = peopleRepository.findByLastnameAndFirstnameAndMiddleName(
-      lastname = lastname,
-      firstname = firstname,
-      middleName = middleName
-    )
-    validateListOfPeople(people)
-    return people.firstOrNull()
+  fun findByLastNameAndFirstnameAndMiddleName(dto: PersonDto): Person? {
+    val people = dto.firstname?.let { firstname ->
+      dto.middleName?.let { middleName ->
+        peopleRepository.findByLastnameAndFirstnameAndMiddleName(
+          lastname = dto.lastname,
+          firstname = firstname,
+          middleName = middleName
+        )
+      } ?: return null
+    } ?: return null
+
+    return validateListOfPeople(people)
   }
 
   fun save(dto: PersonDto): PersonDto {
@@ -88,8 +91,8 @@ class PeopleService(
     val person = findById(id)
 
     person.lastname = dto.lastname
-    person.firstname = dto.firstname
-    person.middleName = dto.middleName
+    person.firstname = dto.firstname!!
+    person.middleName = dto.middleName!!
 
     return peopleMapper.toDto(
       peopleRepository.save(person)
@@ -102,10 +105,16 @@ class PeopleService(
     return RemovedEntityDto(id)
   }
 
-  private fun validateListOfPeople(people: List<Person>) {
-    if (people.size > COUNT_OF_PERSON_SEARCHING) {
-      throw BusinessLogicException(TOO_MANY_PEOPLE)
+  private fun validateListOfPeople(people: List<Person>) : Person? {
+    if (people.isEmpty()) {
+      throw EntityNotFoundException(PERSON_NOT_FOUND)
     }
+
+    if (people.size > COUNT_OF_PERSON_SEARCHING) {
+      return null
+    }
+
+    return people.first()
   }
 
   private companion object {

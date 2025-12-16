@@ -28,7 +28,7 @@ class PeopleController(
   }
 
   @GetMapping("/{id}")
-  fun getPerson(@PathVariable("id") id: UUID) : ResponseEntity<PersonDto> {
+  fun getPerson(@PathVariable id: UUID) : ResponseEntity<PersonDto> {
     return ResponseEntity.ok(peopleService.getPersonDtoById(id))
   }
 
@@ -38,12 +38,12 @@ class PeopleController(
   }
 
   @PutMapping("/{id}")
-  fun updatePerson(@PathVariable("id") id: UUID, @RequestBody person: PersonDto) : ResponseEntity<PersonDto> {
+  fun updatePerson(@PathVariable id: UUID, @RequestBody person: PersonDto) : ResponseEntity<PersonDto> {
     return ResponseEntity.ok(peopleService.update(id, person))
   }
 
   @DeleteMapping("/{id}")
-  fun deletePerson(@PathVariable("id") id: UUID) : ResponseEntity<RemovedEntityDto> {
+  fun deletePerson(@PathVariable id: UUID) : ResponseEntity<RemovedEntityDto> {
     return ResponseEntity.ok(peopleService.delete(id))
   }
 }

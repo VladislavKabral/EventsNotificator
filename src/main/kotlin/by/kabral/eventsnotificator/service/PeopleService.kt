@@ -1,7 +1,7 @@
 package by.kabral.eventsnotificator.service
 
-import by.kabral.eventsnotificator.dto.PeopleDto
-import by.kabral.eventsnotificator.dto.PersonDto
+import by.kabral.eventsnotificator.dto.people.PeopleDto
+import by.kabral.eventsnotificator.dto.people.PersonDto
 import by.kabral.eventsnotificator.dto.RemovedEntityDto
 import by.kabral.eventsnotificator.exception.BusinessLogicException
 import by.kabral.eventsnotificator.exception.EntityNotSavedException
@@ -20,27 +20,27 @@ import java.util.UUID
 class PeopleService(
   private val peopleRepository: PeopleRepository,
   private val peopleMapper: PeopleMapper
-) {
+) : BaseService<Person, PersonDto> {
 
-  fun getPeopleDto(): PeopleDto {
+  fun findPeople(): PeopleDto {
     return PeopleDto(
       findAll()
       .map { peopleMapper.toDto(it) }
     )
   }
 
-  fun findAll(): List<Person> {
+  override fun findAll(): List<Person> {
     return peopleRepository
       .findAll()
   }
 
-  fun findById(id: UUID): Person {
+  override fun findById(id: UUID): Person {
     return peopleRepository
       .findById(id)
       .orElseThrow { EntityNotFoundException(String.format(PERSON_WITH_ID_NOT_FOUND, id)) }
   }
 
-  fun getPersonDtoById(id: UUID): PersonDto {
+  fun findPerson(id: UUID): PersonDto {
     return peopleMapper.toDto(findById(id))
   }
 
@@ -85,7 +85,7 @@ class PeopleService(
     return validateListOfPeople(people)
   }
 
-  fun save(dto: PersonDto): PersonDto {
+  override fun save(dto: PersonDto): PersonDto {
     val person = peopleMapper.toEntity(dto)
 
     val newPerson = peopleRepository.save(person)
@@ -94,7 +94,7 @@ class PeopleService(
       ?: throw EntityNotSavedException(PERSON_NOT_SAVED)
   }
 
-  fun update(id: UUID, dto: PersonDto): PersonDto {
+  override fun update(id: UUID, dto: PersonDto): PersonDto {
     val person = findById(id)
 
     dto.lastname?.let { lastname -> person.lastname = lastname }
@@ -106,8 +106,9 @@ class PeopleService(
     )
   }
 
-  fun delete(id: UUID) : RemovedEntityDto {
-    peopleRepository.deleteById(id)
+  override fun delete(id: UUID) : RemovedEntityDto {
+    val person = findById(id)
+    peopleRepository.delete(person)
 
     return RemovedEntityDto(id)
   }

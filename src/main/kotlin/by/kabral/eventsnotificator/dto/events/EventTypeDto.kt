@@ -1,4 +1,4 @@
-package by.kabral.eventsnotificator.dto
+package by.kabral.eventsnotificator.dto.events
 
 import java.util.*
 

@@ -1,6 +1,6 @@
 package by.kabral.eventsnotificator.mapper
 
-import by.kabral.eventsnotificator.dto.PersonDto
+import by.kabral.eventsnotificator.dto.people.PersonDto
 import by.kabral.eventsnotificator.model.Person
 import org.mapstruct.Mapper
 

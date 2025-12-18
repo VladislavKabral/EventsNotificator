@@ -6,5 +6,7 @@ object Message {
   const val TOO_MANY_PEOPLE = "More than one person have the same data. Try to add some more information."
   const val PERSON_NOT_SAVED = "The person is not saved."
 
+  const val USER_NOT_FOUND = "The user is not found."
+
   const val EVENT_TYPE_NOT_FOUND = "The event type with id %s is not found."
 }

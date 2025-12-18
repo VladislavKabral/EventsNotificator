@@ -1,6 +1,6 @@
 package by.kabral.eventsnotificator.service
 
-import by.kabral.eventsnotificator.dto.EventTypeDto
+import by.kabral.eventsnotificator.dto.events.EventTypeDto
 import by.kabral.eventsnotificator.mapper.EventTypesMapper
 import by.kabral.eventsnotificator.model.EventType
 import by.kabral.eventsnotificator.repository.EventTypesRepository

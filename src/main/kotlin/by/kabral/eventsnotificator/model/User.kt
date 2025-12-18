@@ -21,19 +21,19 @@ data class User(
   val id: UUID?,
 
   @Column(name = "lastname")
-  val lastname: String,
+  var lastname: String,
 
   @Column(name = "firstname")
-  val firstname: String,
+  var firstname: String,
 
   @Column(name = "email")
-  val email: String,
+  var email: String,
 
   @Column(name = "password")
-  val password: String,
+  var password: String,
 
   @Column(name = "date_of_birthday")
-  val dateOfBirth: LocalDate,
+  var dateOfBirth: LocalDate,
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(

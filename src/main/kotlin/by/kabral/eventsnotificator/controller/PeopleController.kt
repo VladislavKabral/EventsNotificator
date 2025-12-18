@@ -1,7 +1,7 @@
 package by.kabral.eventsnotificator.controller
 
-import by.kabral.eventsnotificator.dto.PeopleDto
-import by.kabral.eventsnotificator.dto.PersonDto
+import by.kabral.eventsnotificator.dto.people.PeopleDto
+import by.kabral.eventsnotificator.dto.people.PersonDto
 import by.kabral.eventsnotificator.dto.RemovedEntityDto
 import by.kabral.eventsnotificator.service.PeopleService
 import org.springframework.http.HttpStatus
@@ -24,12 +24,12 @@ class PeopleController(
 
   @GetMapping
   fun getPeople() : ResponseEntity<PeopleDto> {
-    return ResponseEntity.ok(peopleService.getPeopleDto())
+    return ResponseEntity.ok(peopleService.findPeople())
   }
 
   @GetMapping("/{id}")
   fun getPerson(@PathVariable id: UUID) : ResponseEntity<PersonDto> {
-    return ResponseEntity.ok(peopleService.getPersonDtoById(id))
+    return ResponseEntity.ok(peopleService.findPerson(id))
   }
 
   @PostMapping

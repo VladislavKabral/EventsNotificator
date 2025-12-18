@@ -52,26 +52,33 @@ class PeopleService(
   }
 
   fun findByLastname(dto: PersonDto): Person? {
-    val people = peopleRepository.findByLastname(dto.lastname)
-    return validateListOfPeople(people)
-  }
-
-  fun findByLastnameAndFirstName(dto: PersonDto): Person? {
-    val people = dto.firstname
-      ?.let { firstname -> peopleRepository.findByLastnameAndFirstname(dto.lastname, firstname) }
+    val people = dto.lastname
+      ?.let { lastname -> peopleRepository.findByLastname(lastname) }
       ?: return null
 
     return validateListOfPeople(people)
   }
 
+  fun findByLastnameAndFirstName(dto: PersonDto): Person? {
+    val people = dto.lastname?.let { lastname ->
+      dto.firstname?.let { firstname ->
+        peopleRepository.findByLastnameAndFirstname(lastname, firstname)
+      } ?: return null
+    } ?: return null
+
+    return validateListOfPeople(people)
+  }
+
   fun findByLastNameAndFirstnameAndMiddleName(dto: PersonDto): Person? {
-    val people = dto.firstname?.let { firstname ->
-      dto.middleName?.let { middleName ->
-        peopleRepository.findByLastnameAndFirstnameAndMiddleName(
-          lastname = dto.lastname,
-          firstname = firstname,
-          middleName = middleName
-        )
+    val people = dto.lastname?.let { lastname ->
+      dto.firstname?.let { firstname ->
+        dto.middleName?.let { middleName ->
+          peopleRepository.findByLastnameAndFirstnameAndMiddleName(
+            lastname = lastname,
+            firstname = firstname,
+            middleName = middleName
+          )
+        } ?: return null
       } ?: return null
     } ?: return null
 
@@ -90,9 +97,9 @@ class PeopleService(
   fun update(id: UUID, dto: PersonDto): PersonDto {
     val person = findById(id)
 
-    person.lastname = dto.lastname
-    person.firstname = dto.firstname!!
-    person.middleName = dto.middleName!!
+    dto.lastname?.let { lastname -> person.lastname = lastname }
+    dto.firstname?.let { firstname -> person.firstname = firstname }
+    dto.middleName?.let { middleName -> person.middleName = middleName }
 
     return peopleMapper.toDto(
       peopleRepository.save(person)

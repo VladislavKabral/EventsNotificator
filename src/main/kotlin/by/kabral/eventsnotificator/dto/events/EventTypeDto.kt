@@ -4,6 +4,6 @@ import java.util.*
 
 data class EventTypeDto(
   val id: UUID?,
-  val name: String,
+  val name: String?,
   val description: String?
 )

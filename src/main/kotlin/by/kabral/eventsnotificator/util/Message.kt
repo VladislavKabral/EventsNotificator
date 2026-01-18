@@ -9,4 +9,6 @@ object Message {
   const val USER_NOT_FOUND = "The user is not found."
 
   const val EVENT_TYPE_NOT_FOUND = "The event type with id %s is not found."
+
+  const val EVENT_NOT_FOUND = "The event %s is not found."
 }

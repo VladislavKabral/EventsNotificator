@@ -21,22 +21,22 @@ data class Event(
   val id: UUID?,
 
   @Column(name = "name")
-  val name: String,
+  var name: String,
 
   @Column(name = "description")
-  val description: String?,
+  var description: String?,
 
   @Column(name = "date")
   val date: LocalDate,
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "type_id")
-  val type: EventType,
+  var type: EventType,
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "person_id")
-  val relatedPerson: Person,
+  val relatedPerson: Person?,
 
   @ManyToMany(mappedBy = "subscriptions")
-  val users: MutableList<User> = mutableListOf()
+  val users: MutableList<User>? = mutableListOf()
 )

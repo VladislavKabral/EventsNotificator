@@ -8,6 +8,7 @@ import by.kabral.eventsnotificator.model.User
 import by.kabral.eventsnotificator.repository.UsersRepository
 import by.kabral.eventsnotificator.util.Message.USER_NOT_FOUND
 import jakarta.persistence.EntityNotFoundException
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -38,12 +39,14 @@ class UsersService(
       .orElseThrow { EntityNotFoundException(USER_NOT_FOUND) }
   }
 
+  @Transactional
   override fun save(dto: UserDto): UserDto {
     val user = usersMapper.toEntity(dto)
 
     return usersRepository.save(user).let{ usersMapper.toDto(it) }
   }
 
+  @Transactional
   override fun update(id: UUID, dto: UserDto): UserDto {
     val user = findById(id)
 
@@ -55,6 +58,7 @@ class UsersService(
     return usersRepository.save(user).let{ usersMapper.toDto(it) }
   }
 
+  @Transactional
   override fun delete(id: UUID): RemovedEntityDto {
     val user = findById(id)
     usersRepository.delete(user)

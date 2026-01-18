@@ -16,8 +16,8 @@ data class EventType(
   val id: UUID?,
 
   @Column(name = "name")
-  val name: String,
+  var name: String,
 
   @Column(name = "description")
-  val description: String?
+  var description: String?
 )

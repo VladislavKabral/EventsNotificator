@@ -13,6 +13,7 @@ import by.kabral.eventsnotificator.util.Message.PERSON_NOT_SAVED
 import by.kabral.eventsnotificator.util.Message.PERSON_WITH_ID_NOT_FOUND
 import by.kabral.eventsnotificator.util.Message.TOO_MANY_PEOPLE
 import jakarta.persistence.EntityNotFoundException
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -85,6 +86,7 @@ class PeopleService(
     return validateListOfPeople(people)
   }
 
+  @Transactional
   override fun save(dto: PersonDto): PersonDto {
     val person = peopleMapper.toEntity(dto)
 
@@ -94,6 +96,7 @@ class PeopleService(
       ?: throw EntityNotSavedException(PERSON_NOT_SAVED)
   }
 
+  @Transactional
   override fun update(id: UUID, dto: PersonDto): PersonDto {
     val person = findById(id)
 
@@ -106,6 +109,7 @@ class PeopleService(
     )
   }
 
+  @Transactional
   override fun delete(id: UUID) : RemovedEntityDto {
     val person = findById(id)
     peopleRepository.delete(person)

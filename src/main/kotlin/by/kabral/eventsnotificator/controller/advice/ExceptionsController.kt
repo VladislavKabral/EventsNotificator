@@ -13,7 +13,10 @@ import java.time.ZonedDateTime
 @ControllerAdvice
 class ExceptionsController {
 
-  @ExceptionHandler(BusinessLogicException::class)
+  @ExceptionHandler(
+    BusinessLogicException::class,
+    IllegalArgumentException::class
+  )
   fun handleBadRequestStatus(ex: Exception) : ResponseEntity<ErrorDto> {
     return ResponseEntity
       .status(HttpStatus.BAD_REQUEST)

@@ -27,7 +27,7 @@ data class Event(
   var description: String?,
 
   @Column(name = "date")
-  val date: LocalDate,
+  var date: LocalDate,
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "type_id")

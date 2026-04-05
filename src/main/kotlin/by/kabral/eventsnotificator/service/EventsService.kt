@@ -3,11 +3,13 @@ package by.kabral.eventsnotificator.service
 import by.kabral.eventsnotificator.dto.RemovedEntityDto
 import by.kabral.eventsnotificator.dto.events.EventDto
 import by.kabral.eventsnotificator.dto.events.EventsDto
-import by.kabral.eventsnotificator.mapper.EventTypesMapper
 import by.kabral.eventsnotificator.mapper.EventsMapper
 import by.kabral.eventsnotificator.model.Event
+import by.kabral.eventsnotificator.repository.EventTypesRepository
 import by.kabral.eventsnotificator.repository.EventsRepository
 import by.kabral.eventsnotificator.util.Message.EVENT_NOT_FOUND
+import by.kabral.eventsnotificator.util.Message.EVENT_TYPE_ID_IS_EMPTY_FOR_NEW_EVENT
+import by.kabral.eventsnotificator.util.Message.NAME_IS_EMPTY_FOR_NEW_EVENT
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -16,8 +18,8 @@ import java.util.UUID
 @Service
 class EventsService(
   private val eventsRepository: EventsRepository,
+  private val eventTypesRepository: EventTypesRepository,
   private val eventsMapper: EventsMapper,
-  private val eventTypeMapper: EventTypesMapper
 ) : BaseService<Event, EventDto> {
 
   fun findEvents() : EventsDto {
@@ -42,7 +44,11 @@ class EventsService(
 
   @Transactional
   override fun save(dto: EventDto): EventDto {
-    val event = eventsMapper.toEntity(dto)
+    val typeId = requireNotNull(dto.type.id) { EVENT_TYPE_ID_IS_EMPTY_FOR_NEW_EVENT }
+    val type = eventTypesRepository.getReferenceById(typeId)
+
+    requireNotNull(dto.name) { NAME_IS_EMPTY_FOR_NEW_EVENT }
+    val event = eventsMapper.toEntity(dto).copy(type = type)
 
     return eventsRepository.save(event).let { eventsMapper.toDto(it) }
   }
@@ -53,7 +59,8 @@ class EventsService(
 
     dto.name?.let { name -> event.name = name }
     dto.description?.let { description -> event.description = description }
-    dto.type.let { type -> event.type = eventTypeMapper.toEntity(type) }
+    dto.date?.let { date -> event.date = date }
+    dto.type.id?.let { typeId -> event.type = eventTypesRepository.getReferenceById(typeId) }
 
     return eventsRepository.save(event).let { eventsMapper.toDto(it) }
   }

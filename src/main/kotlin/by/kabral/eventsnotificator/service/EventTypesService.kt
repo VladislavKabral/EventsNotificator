@@ -6,6 +6,7 @@ import by.kabral.eventsnotificator.dto.events.EventTypesDto
 import by.kabral.eventsnotificator.mapper.EventTypesMapper
 import by.kabral.eventsnotificator.model.EventType
 import by.kabral.eventsnotificator.repository.EventTypesRepository
+import by.kabral.eventsnotificator.util.Message.EVENT_TYPE_NAME_IS_EMPTY_FOR_EVENT_TYPE
 import by.kabral.eventsnotificator.util.Message.EVENT_TYPE_NOT_FOUND
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
@@ -40,6 +41,8 @@ class EventTypesService(
 
   @Transactional
   override fun save(dto: EventTypeDto): EventTypeDto {
+    requireNotNull(dto.name) { EVENT_TYPE_NAME_IS_EMPTY_FOR_EVENT_TYPE  }
+
     val eventType = eventTypesMapper.toEntity(dto)
 
     return eventTypesRepository.save(eventType).let { eventTypesMapper.toDto(it) }

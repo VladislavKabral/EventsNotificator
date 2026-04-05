@@ -8,7 +8,10 @@ object Message {
 
   const val USER_NOT_FOUND = "The user is not found."
 
+  const val EVENT_TYPE_NAME_IS_EMPTY_FOR_EVENT_TYPE = "Name is required for new event's type."
   const val EVENT_TYPE_NOT_FOUND = "The event type with id %s is not found."
 
   const val EVENT_NOT_FOUND = "The event %s is not found."
+  const val EVENT_TYPE_ID_IS_EMPTY_FOR_NEW_EVENT = "Id of event's type is required for new event."
+  const val NAME_IS_EMPTY_FOR_NEW_EVENT = "Name is required for new event."
 }

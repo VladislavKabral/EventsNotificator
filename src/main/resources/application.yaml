@@ -10,3 +10,18 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+  mail:
+    host: localhost
+    port: 1025
+    username: no-reply@events-notificator.com
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+notifications:
+#  cron: 0 0 9 * * *
+  cron: 0 */3 * * * *

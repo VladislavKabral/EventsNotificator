@@ -9,15 +9,9 @@ CREATE TABLE IF NOT EXISTS Users (
     id                  UUID            PRIMARY KEY,
     lastname            VARCHAR(50)     NOT NULL,
     firstname           VARCHAR(50)     NOT NULL,
-    email               VARCHAR(50)     NOT NULL,
+    email               VARCHAR(50)     NOT NULL        UNIQUE,
     password            VARCHAR(255)    NOT NULL,
     date_of_birthday    DATE            NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Events_Types (
-    id              UUID            PRIMARY KEY,
-    name            VARCHAR(50)     NOT NULL,
-    description     TEXT
 );
 
 CREATE TABLE IF NOT EXISTS Events (
@@ -25,8 +19,8 @@ CREATE TABLE IF NOT EXISTS Events (
     name            VARCHAR(50)     NOT NULL,
     description     TEXT,
     date            DATE            NOT NULL,
-    type_id         UUID            NOT NULL        REFERENCES Events_Types(id) ON DELETE SET NULL,
-    person_id         UUID            REFERENCES People(id)
+    type            VARCHAR(50)     NOT NULL,
+    person_id       UUID            REFERENCES People(id)
 );
 
 CREATE TABLE IF NOT EXISTS Subscriptions (

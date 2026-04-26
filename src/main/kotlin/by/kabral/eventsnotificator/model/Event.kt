@@ -29,8 +29,6 @@ data class Event(
   @Column(name = "date")
   var date: LocalDate,
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "type_id")
   var type: EventType,
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -38,5 +36,5 @@ data class Event(
   val relatedPerson: Person?,
 
   @ManyToMany(mappedBy = "subscriptions")
-  val users: MutableList<User>? = mutableListOf()
+  val subscribers: MutableList<User>? = mutableListOf()
 )

@@ -22,5 +22,5 @@ data class Person(
   var firstname: String,
 
   @Column(name = "middle_name")
-  var middleName: String
+  var middleName: String?
 )

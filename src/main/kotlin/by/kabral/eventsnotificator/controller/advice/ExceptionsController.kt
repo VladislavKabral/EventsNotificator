@@ -30,6 +30,13 @@ class ExceptionsController {
       .body(buildResponseBody(ex))
   }
 
+  @ExceptionHandler(NoSuchElementException::class)
+  fun handleNoSuchElementException(ex: Exception) : ResponseEntity<ErrorDto> {
+    return ResponseEntity
+      .status(HttpStatus.INTERNAL_SERVER_ERROR)
+      .body(buildResponseBody(ex))
+  }
+
   private fun buildResponseBody(ex: Exception): ErrorDto {
     return ErrorDto(
       message = ex.message!!,

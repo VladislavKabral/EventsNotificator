@@ -36,5 +36,5 @@ data class Event(
   val relatedPerson: Person?,
 
   @ManyToMany(mappedBy = "subscriptions")
-  val subscribers: MutableList<User>? = mutableListOf()
+  val subscribers: MutableList<User> = mutableListOf()
 )

@@ -3,6 +3,7 @@ package by.kabral.eventsnotificator.controller
 import by.kabral.eventsnotificator.dto.RemovedEntityDto
 import by.kabral.eventsnotificator.dto.events.EventDto
 import by.kabral.eventsnotificator.dto.events.EventsDto
+import by.kabral.eventsnotificator.dto.users.UserDto
 import by.kabral.eventsnotificator.service.EventsService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,6 +36,11 @@ class EventsController(
   @PostMapping
   fun saveEvent(@RequestBody eventDto: EventDto) : ResponseEntity<EventDto> {
     return ResponseEntity(eventsService.save(eventDto), HttpStatus.CREATED)
+  }
+
+  @PutMapping("/{eventId}/assign/{userId}")
+  fun assignEvent(@PathVariable eventId: UUID, @PathVariable userId: UUID) : ResponseEntity<UserDto> {
+    return ResponseEntity(eventsService.assignEventToSubscriber(eventId, userId), HttpStatus.OK)
   }
 
   @PutMapping("/{id}")

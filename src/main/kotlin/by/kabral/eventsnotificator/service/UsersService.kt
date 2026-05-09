@@ -46,6 +46,10 @@ class UsersService(
     return usersRepository.save(user).let{ usersMapper.toDto(it) }
   }
 
+  fun save(user: User): UserDto {
+    return usersRepository.save(user).let{ usersMapper.toDto(it) }
+  }
+
   @Transactional
   override fun update(id: UUID, dto: UserDto): UserDto {
     val user = findById(id)

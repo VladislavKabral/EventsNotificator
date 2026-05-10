@@ -67,6 +67,7 @@ class EventsService(
       helper.setText(notificationBody, true)
 
       val emails = event.subscribers
+        .orEmpty()
         .map { it.email }
         .toTypedArray()
 
@@ -81,7 +82,7 @@ class EventsService(
   fun assignEventToSubscriber(eventId: UUID, userId: UUID): UserDto {
     val event = findById(eventId)
     val subscriber = usersService.findById(userId)
-    event.subscribers.add(subscriber)
+    event.subscribers?.add(subscriber)
     subscriber.subscriptions.add(event)
 
     return usersService.save(subscriber)

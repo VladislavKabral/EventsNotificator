@@ -393,10 +393,10 @@ object Template {
                 
                 <div class="content">
                     <div class="holiday-icon">💑💍💐</div>
-                    <div class="holiday-name">${'$'}{'$'}{'$'}date годовщина свадьбы</div>
+                    <div class="holiday-name">${'$'}date годовщина свадьбы</div>
                     
                     <div class="couple-names">
-                        <div>${'$'}{'$'}description 💕</div>
+                        <div>${'$'}description 💕</div>
                     </div>
                     
                     <div class="reminder-text">
@@ -546,13 +546,13 @@ object Template {
                 
                 <div class="content">
                     <div class="reminder-text">
-                        <p>${'$'}{'$'}date</p>
+                        <p>${'$'}date</p>
                     </div>
                     
-                    <div class="event-name">${'$'}{'$'}name</div>
+                    <div class="event-name">${'$'}name</div>
                     
                     <div class="reminder-text">
-                        <p>${'$'}{'$'}description</p>
+                        <p>${'$'}description</p>
                     </div>
                 </div>
                 

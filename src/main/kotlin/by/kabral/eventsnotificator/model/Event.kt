@@ -2,6 +2,8 @@ package by.kabral.eventsnotificator.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -29,6 +31,8 @@ data class Event(
   @Column(name = "date")
   var date: LocalDate,
 
+  @Column(name = "type")
+  @Enumerated(EnumType.STRING)
   var type: EventType,
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -36,5 +40,5 @@ data class Event(
   val relatedPerson: Person?,
 
   @ManyToMany(mappedBy = "subscriptions")
-  val subscribers: MutableList<User> = mutableListOf()
+  val subscribers: MutableList<User>? = mutableListOf()
 )
